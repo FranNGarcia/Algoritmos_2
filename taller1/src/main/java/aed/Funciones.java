@@ -82,7 +82,9 @@ class Funciones {
     }
 
     boolean esPrefijo(String s1, String s2) {
-        //si s1 > s2 falso
+        if (s1.length() > s2.length()){
+            return false;
+        }
         for (int i = 0; i < s1.length(); i++){
             if (s1.charAt(i) != s2.charAt(i)){
                 return false;
@@ -92,9 +94,12 @@ class Funciones {
     }
 
     boolean esSufijo(String s1, String s2) {
-        //si s2 < s1 falso
-        for (int i = s2.length()-1; i > s2.length() - s1.length(); i--){
-            if (s1.charAt(i) != s2.charAt(i)){
+        if (s1.length() > s2.length()) {
+            return false;
+        }
+        int diferencia_largos = s2.length() - s1.length();
+        for (int i = 0; i < s1.length(); i++) {
+            if (s1.charAt(i) != s2.charAt(diferencia_largos + i)) {
                 return false;
             }
         }
