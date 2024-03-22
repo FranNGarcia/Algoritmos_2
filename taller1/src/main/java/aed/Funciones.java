@@ -19,7 +19,7 @@ class Funciones {
 
     int factorialIterativo(int n) {
         int res = 1;
-        for (int i = 0; i<n; i++){
+        for (int i = 1; i<=n; i++){
             res *= i;
         }
         return res;
@@ -28,13 +28,16 @@ class Funciones {
     int factorialRecursivo(int n) {
         int res = 1;
         while (n > 0) {
-            res *= res;
+            res *= n;
             n=n-1;
         }
         return res;
     }
 
     boolean esPrimo(int n) {
+        if (n == 0 || n == 1){
+            return false;
+        }
        for (int i = 2; i < n; i++){
         if (n%i == 0){
             return false;
@@ -79,6 +82,7 @@ class Funciones {
     }
 
     boolean esPrefijo(String s1, String s2) {
+        //si s1 > s2 falso
         for (int i = 0; i < s1.length(); i++){
             if (s1.charAt(i) != s2.charAt(i)){
                 return false;
@@ -88,6 +92,7 @@ class Funciones {
     }
 
     boolean esSufijo(String s1, String s2) {
+        //si s2 < s1 falso
         for (int i = s2.length()-1; i > s2.length() - s1.length(); i--){
             if (s1.charAt(i) != s2.charAt(i)){
                 return false;
