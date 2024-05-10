@@ -4,25 +4,53 @@ import java.util.*;
 
 public class ListaEnlazada<T> implements Secuencia<T> {
     // Completar atributos privados
+	private int longitud;
+	private Nodo primero;
 
     private class Nodo {
-        // Completar
+        //completar
+		int valor;
+		Nodo sig;
+		Nodo ant;
+		
+		Nodo(v){
+			valor =v;
+			sig = null;
+			ant = null;
+		}
+		
     }
 
     public ListaEnlazada() {
-        throw new UnsupportedOperationException("No implementada aun");
+        primero = null;
+		longitud = 0;
+		
     }
 
     public int longitud() {
-        throw new UnsupportedOperationException("No implementada aun");
+		return this.longitud;
+		}
     }
 
     public void agregarAdelante(T elem) {
-        throw new UnsupportedOperationException("No implementada aun");
+		//aumento longitud
+		this.longitud += 1;
+		//creo nuevo nodo
+		Nodo nuevo = new Nodo(elem)
+		//el siguiente del nuevo es el anterior primero
+		nuevo.sig = this.primero;
+		//al anterior primero le agrego como anterior el nuevo
+		this.primero.ant = nuevo;
+		//el primero pasa a ser el nuevo
+		this.primero = nuevo;
     }
 
     public void agregarAtras(T elem) {
-        throw new UnsupportedOperationException("No implementada aun");
+		//aumento long y creo nodo nuevo
+		this.longitud += 1;
+		Nodo nuevo = new Node(elem);
+		//obtengo ultimo nodo
+		//TODO
     }
 
     public T obtener(int i) {
