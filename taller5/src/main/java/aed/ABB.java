@@ -101,47 +101,94 @@ public class ABB<T extends Comparable<T>> implements Conjunto<T> {
     public void eliminar(T elem) {
         Nodo actual = this.raiz;
         Nodo superior = null;
-        int cmp = 0;
-        while (actual != null) {
-            cmp = elem.compareTo(actual.elem);
-            if (cmp < 0) {
-                superior = actual;
+        boolean esIzq = false;
+    
+        // busco el nodo a eliminar
+        while (actual != null && actual.elem.compareTo(elem) != 0) {
+            superior = actual;
+            if (elem.compareTo(actual.elem) < 0) {
+                esIzq = true;
                 actual = actual.izq;
-            } else if (cmp > 0) {
-                superior = actual;
-                actual = actual.der;
             } else {
-                break;
+                esIzq = false;
+                actual = actual.der;
             }
         }
+    
+        //no se encontró el elemento a eliminar
         if (actual == null) {
             return;
         }
-        if (actual.izq == null) {
-            if (superior == null) {
-                this.raiz = actual.der;
+    
+        if (actual.izq == null && actual.der == null) {
+            if (actual == this.raiz) {
+                this.raiz = null;
+            } else if (esIzq) {
+                superior.izq = null;
             } else {
-                if (cmp < 0) {
-                    superior.izq = actual.der;
-                } else {
-                    superior.der = actual.der;
-                }
-            }
-        } else {
-            Nodo maximo = actual.izq;
-            Nodo superiorMaximo = actual;
-            while (maximo.der != null) {
-                superiorMaximo = maximo;
-                maximo = maximo.der;
-            }
-            actual.elem = maximo.elem;
-            if (superiorMaximo == actual) {
-                superiorMaximo.izq = maximo.izq;
-            } else {
-                superiorMaximo.der = maximo.izq;
+                superior.der = null;
             }
         }
+    
+        else if (actual.izq == null) {
+            if (actual == this.raiz) {
+                this.raiz = actual.der;
+            } else if (esIzq) {
+                superior.izq = actual.der;
+            } else {
+                superior.der = actual.der;
+            }
+            actual.der.padre = superior; // Actualiza el padre
+        }
+    
+        else if (actual.der == null) {
+            if (actual == this.raiz) {
+                this.raiz = actual.izq;
+            } else if (esIzq) {
+                superior.izq = actual.izq;
+            } else {
+                superior.der = actual.izq;
+            }
+            actual.izq.padre = superior; // Actualiza el padre
+        }
+    
+        else {
+            Nodo reemplazo = obtenerReemplazo(actual);
+            if (actual == this.raiz) {
+                this.raiz = reemplazo;
+            } else if (esIzq) {
+                superior.izq = reemplazo;
+            } else {
+                superior.der = reemplazo;
+            }
+            reemplazo.izq = actual.izq;
+            actual.izq.padre = reemplazo; // Actualiza el padre
+        }
+    
         this.longitud--;
+    }
+    
+    private Nodo obtenerReemplazo(Nodo nodoReemplazado) {
+        Nodo reemplazoPadre = nodoReemplazado;
+        Nodo reemplazo = nodoReemplazado;
+        Nodo actual = nodoReemplazado.der;
+    
+        while (actual != null) {
+            reemplazoPadre = reemplazo;
+            reemplazo = actual;
+            actual = actual.izq;
+        }
+    
+        if (reemplazo != nodoReemplazado.der) {
+            reemplazoPadre.izq = reemplazo.der;
+            if (reemplazo.der != null) {
+                reemplazo.der.padre = reemplazoPadre; // Actualiza el padre
+            }
+            reemplazo.der = nodoReemplazado.der;
+            nodoReemplazado.der.padre = reemplazo; // Actualiza el padre
+        }
+    
+        return reemplazo;
     }
 
     // aux de recursion
